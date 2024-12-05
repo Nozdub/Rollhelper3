@@ -129,7 +129,7 @@ fun MainRollPage(modifier: Modifier = Modifier) {
                                     // Add the selected dice to the list
                                     selectedDiceList.add(diceType to 1)
 
-                                    // Show snackbar if dice count reaches 20
+                                    // Show snackbar if dice count reaches 20 !
                                     if (selectedDiceList.size == 20) {
                                         coroutineScope.launch {
                                             snackbarHostState.showSnackbar(
