@@ -1,6 +1,7 @@
 package com.example.rollhelper3.ui.main
 
 import android.annotation.SuppressLint
+import android.media.MediaPlayer
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -11,15 +12,21 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import com.example.rollhelper3.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -30,6 +37,7 @@ fun MainRollPage(modifier: Modifier = Modifier) {
     var rollResults by remember { mutableStateOf<List<Int>>(emptyList()) }
     val rollHistory = remember { mutableStateListOf<List<Int>>() } // Track the last 10 rolls
     var hasRolled by remember { mutableStateOf(false) } // Track if a roll has been made
+    var isSoundEnabled by remember {mutableStateOf(true) }
 
     // Snackbar state and coroutine scope for showing messages
     val snackbarHostState = remember { SnackbarHostState() }
@@ -45,13 +53,13 @@ fun MainRollPage(modifier: Modifier = Modifier) {
         R.drawable.tile005,
         R.drawable.tile006,
         R.drawable.tile007,
+        R.drawable.tile008,
         R.drawable.tile009,
         R.drawable.tile010,
         R.drawable.tile011,
         R.drawable.tile012,
         R.drawable.tile013,
         R.drawable.tile014,
-        R.drawable.tile015
     )
 
     // State of dragon animation
@@ -81,20 +89,35 @@ fun MainRollPage(modifier: Modifier = Modifier) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(56.dp),
-                    contentAlignment = Alignment.Center
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
                 ) {
+                    // Title centered in the top bar
                     Text(
                         text = "RollHelper",
                         style = MaterialTheme.typography.headlineLarge,
                         color = MaterialTheme.colorScheme.tertiary,
                         letterSpacing = 1.5.sp,
-                        modifier = Modifier.padding(top = 4.dp)
+                        modifier = Modifier.align(Alignment.Center) // Center the text in the Box
                     )
+
+                    // Sound toggle button aligned to the right
+                    IconToggleButton(
+                        checked = isSoundEnabled,
+                        onCheckedChange = { isSoundEnabled = it },
+                        modifier = Modifier.align(Alignment.CenterEnd) // Align the button to the right
+                    ) {
+                        Icon(
+                            painter = painterResource(if (isSoundEnabled) R.drawable.volume else R.drawable.mute),
+                            contentDescription = if (isSoundEnabled) "Sound On" else "Sound Off",
+                            tint = MaterialTheme.colorScheme.tertiary,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
                 }
             }
         },
-        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+
+                snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         content = { paddingValues ->
             Box(
                 modifier = modifier
@@ -185,13 +208,22 @@ fun MainRollPage(modifier: Modifier = Modifier) {
                                         painter = painterResource(id = R.drawable.undo_arrow_icon),
                                         contentDescription = "Undo",
                                         tint = MaterialTheme.colorScheme.tertiary,
-                                        modifier = Modifier.size(24.dp)
+                                        modifier = Modifier
+                                            .size(24.dp)
+
+
                                     )
                                 }
 
                                 Text(
                                     text = "Pick your dice!",
-                                    style = MaterialTheme.typography.bodyMedium,
+                                    style = MaterialTheme.typography.bodyMedium.copy(
+                                        shadow = Shadow(
+                                            color = Color.Black,
+                                            offset = androidx.compose.ui.geometry.Offset(2f, 2f),
+                                            blurRadius = 4f
+                                        )
+                                    ),
                                     color = MaterialTheme.colorScheme.tertiary,
                                     modifier = Modifier.padding(horizontal = 16.dp)
                                 )
@@ -205,7 +237,9 @@ fun MainRollPage(modifier: Modifier = Modifier) {
                                         painter = painterResource(id = R.drawable.brush_icon),
                                         contentDescription = "Clear",
                                         tint = MaterialTheme.colorScheme.tertiary,
-                                        modifier = Modifier.size(24.dp)
+                                        modifier = Modifier
+                                            .size(24.dp)
+
                                     )
                                 }
                             }
@@ -238,6 +272,26 @@ fun MainRollPage(modifier: Modifier = Modifier) {
                         rollResults = rollResults
                     )
 
+                    // Display the most recent total
+                    if (rollHistory.isNotEmpty()) {
+                        val mostRecentRoll = rollHistory.lastOrNull()
+                        val mostRecentTotal = mostRecentRoll?.sum() ?: 0
+
+                        Text(
+                            text = "Total: $mostRecentTotal",
+                            style = MaterialTheme.typography.bodyLarge.copy(
+
+                            ),
+
+                            color = MaterialTheme.colorScheme.scrim,
+                            letterSpacing = 1.5.sp,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 16.dp),
+                            textAlign = TextAlign.Center
+                        )
+                    }
+
                     // Floating Card for Roll History Section
                     Card(
                         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
@@ -257,21 +311,44 @@ fun MainRollPage(modifier: Modifier = Modifier) {
 
                 // Show dragon animation overlay, only when active (placed at the end of the Box)
                 if (showDragonAnimation) {
+                    val context = LocalContext.current
+
+                    // Play sound when animation starts, only if sound is enabled
+                    LaunchedEffect(showDragonAnimation) {
+                        if (isSoundEnabled) {
+                            val mediaPlayer = MediaPlayer.create(context, R.raw.dragon)
+                            mediaPlayer.start()
+                            mediaPlayer.setOnCompletionListener {
+                                mediaPlayer.release() // Release resources after playback
+                            }
+                        }
+
+                        // Launch coroutine to update the dragon frames while it moves
+                        while (showDragonAnimation) {
+                            for (frame in dragonFrames) {
+                                currentDragonFrame = frame
+                                delay(50L)
+                            }
+                        }
+                    }
+
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(350.dp)
-                            .offset(y = dragonVerticalOffset.dp), // Animate vertical offset
+                            .offset(y = dragonVerticalOffset.dp) // Animate vertical offset
+                            .zIndex(1f),
                         contentAlignment = Alignment.Center
                     ) {
                         Image(
                             painter = painterResource(id = currentDragonFrame),
                             contentDescription = "Flying dragon animation",
                             modifier = Modifier
-                                .size(350.dp) // Make the dragon larger
+                                .size(370.dp) // Make the dragon larger
                         )
                     }
                 }
+
             }
         }
     )

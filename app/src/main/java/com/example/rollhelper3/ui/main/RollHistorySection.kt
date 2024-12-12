@@ -8,6 +8,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -26,22 +29,18 @@ fun RollHistorySection(
         // History heading that is always visible and centered
         Text(
             text = "History",
-            style = MaterialTheme.typography.headlineSmall,
+            style = MaterialTheme.typography.headlineSmall.copy(
+                shadow = Shadow(
+                    color = Color.Black,
+                    offset = androidx.compose.ui.geometry.Offset(2f, 2f),
+                    blurRadius = 4f
+                )
+            ),
             color = MaterialTheme.colorScheme.tertiary,
             letterSpacing = 1.5.sp,
             modifier = Modifier.padding(bottom = 8.dp)
         )
 
-        // If roll history is not empty, display the most recent total and history list
-        if (rollHistory.isNotEmpty()) {
-            val mostRecentRoll = rollHistory.lastOrNull()
-            val mostRecentTotal = mostRecentRoll?.sum() ?: 0
-
-            // Display the most recent total
-            Text(
-                text = "Most Recent Total: $mostRecentTotal",
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
 
             // Display the history in a scrollable list
             LazyColumn(
@@ -53,13 +52,19 @@ fun RollHistorySection(
                     val total = rolls.sum()
                     Text(
                         text = "Rolls: ${rolls.joinToString(separator = " + ")} = Total: $total",
-                        style = MaterialTheme.typography.bodyMedium,
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            shadow = Shadow(
+                                color = Color.Black,
+                                offset = androidx.compose.ui.geometry.Offset(2f, 2f),
+                                blurRadius = 4f
+                            )
+                        ),
                         color = MaterialTheme.colorScheme.tertiary,
                         letterSpacing = 1.5.sp,
                         modifier = Modifier.padding(vertical = 2.dp)
                     )
                 }
             }
-        }
     }
 }
+
