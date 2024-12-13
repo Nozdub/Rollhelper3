@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -13,6 +12,7 @@ import com.example.rollhelper3.ui.utils.getAnimationFramesForDiceResourceIds
 import com.example.rollhelper3.ui.utils.getStillImageForResultResourceId
 import com.example.rollhelper3.ui.utils.maxDiceValue
 import kotlinx.coroutines.delay
+
 
 @Composable
 fun DiceResultDisplay(

@@ -3,25 +3,41 @@ package com.example.rollhelper3.ui.main
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.launch
 
 @Composable
 fun RollButton(
     selectedDiceList: List<Pair<String, Int>>,
     onRoll: (List<Int>) -> Unit,
+    snackbarHostState: SnackbarHostState, // Pass the snackbar host state
     modifier: Modifier = Modifier
 ) {
+    val coroutineScope = rememberCoroutineScope() // For showing snackbar messages
+
     ElevatedButton(
         onClick = {
-            val results = selectedDiceList.map { (_, _) ->
-                (1..20).random() // Example: Roll random results for a d20
+            if (selectedDiceList.isEmpty()) {
+                // Show snackbar if no dice are selected
+                coroutineScope.launch {
+                    snackbarHostState.showSnackbar(
+                        message = "Select some dice first", // Snackbar message
+                        duration = SnackbarDuration.Short // Short duration
+                    )
+                }
+            } else {
+                // Roll the dice if selections are available
+                val results = selectedDiceList.map { (_, _) ->
+                    (1..20).random() // Example: Roll random results for a d20
+                }
+                onRoll(results)
             }
-            onRoll(results)
         },
         modifier = modifier
             .fillMaxWidth()
