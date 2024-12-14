@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.rollhelper3.ui.main.MainRollPage
+import com.example.rollhelper3.ui.navigation.AppNavigation
 import com.example.rollhelper3.ui.theme.RollHelper3Theme
 
 class MainActivity : ComponentActivity() {
@@ -16,7 +17,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             RollHelper3Theme {
-                MainRollPage()
+                AppNavigation() // Connects navigation
             }
         }
     }
@@ -26,6 +27,5 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainRollPagePreview() {
     RollHelper3Theme {
-        MainRollPage(modifier = Modifier.fillMaxSize())
     }
 }

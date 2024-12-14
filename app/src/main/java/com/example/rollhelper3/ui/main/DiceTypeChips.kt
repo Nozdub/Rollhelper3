@@ -19,7 +19,7 @@ fun DiceTypeChips(
     val diceTypesRow1 = listOf("d4", "d6", "d8")
     val diceTypesRow2 = listOf("d10", "d12", "d20")
 
-    Column(modifier = modifier.padding(8.dp)) {
+    Column(modifier = modifier.padding(4.dp)) {
         // First row of chips
         Row(modifier = Modifier.padding(8.dp)) {
             diceTypesRow1.forEach { diceType ->

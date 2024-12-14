@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.rollhelper3.ui.utils.maxDiceValue
 import kotlinx.coroutines.launch
 
 @Composable
@@ -33,8 +34,8 @@ fun RollButton(
                 }
             } else {
                 // Roll the dice if selections are available
-                val results = selectedDiceList.map { (_, _) ->
-                    (1..20).random() // Example: Roll random results for a d20
+                val results = selectedDiceList.map { (diceType, _) ->
+                    (1..maxDiceValue(diceType)).random() // Roll based on dice type
                 }
                 onRoll(results)
             }
