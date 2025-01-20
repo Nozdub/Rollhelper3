@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("com.google.protobuf") version "0.9.4" // Protocol Buffers plugin
 }
 
 android {
@@ -49,6 +50,21 @@ android {
     }
 }
 
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.14.0" // Protoc artifact
+    }
+    generateProtoTasks {
+        all().forEach { task ->
+            task.builtins {
+                create("java") {
+                    option("lite") // Use the lite version for Android
+                }
+            }
+        }
+    }
+}
+
 dependencies {
     implementation(libs.material3)
     implementation(libs.androidx.core.ktx)
@@ -59,6 +75,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.navigation.compose)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -66,4 +83,17 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // Proto DataStore
+    implementation("androidx.datastore:datastore:1.1.1")
+
+    // Protocol Buffers
+    implementation("com.google.protobuf:protobuf-javalite:3.14.0")
+
+    // datastore
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
+
 }
+
+
