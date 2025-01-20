@@ -50,7 +50,7 @@ To run the RollHelper app locally, follow these steps:
 - **Snackbar**: To display brief messages at the bottom of the screen.
 
 ## Future Enhancements
--**Minor fixes**: Fix issues regarding light vs darkmode.
+- **Minor fixes**: Fix issues regarding light vs darkmode.
 - **Sound Effects**: Might add a dice rolling sound.
 - **Optimization**: Improve dice animations and general app optimizing.
 
