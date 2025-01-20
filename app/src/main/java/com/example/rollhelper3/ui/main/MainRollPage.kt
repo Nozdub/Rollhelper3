@@ -16,6 +16,7 @@ import androidx.compose.ui.zIndex
 import com.example.rollhelper3.R
 import com.example.rollhelper3.ui.components.AppTopBar
 import com.example.rollhelper3.ui.components.DragonAnimation
+import com.example.rollhelper3.ui.storage.DataStoreManager
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -24,19 +25,51 @@ import kotlinx.coroutines.launch
 @Composable
 fun MainRollPage(
     modifier: Modifier = Modifier,
-    rollHistory: MutableList<List<Int>>,
+    rollHistory: MutableList<Triple<List<Int>, Int, Int>>, // Update the type here
     selectedDiceList: MutableList<Pair<String, Int>>,
     rollResults: List<Int>,
     hasRolled: Boolean,
     onHasRolledUpdated: (Boolean) -> Unit,
     isFocused: Boolean,
     onRollResultsUpdated: (List<Int>) -> Unit,
-    shouldAnimate: Boolean
+    shouldAnimate: Boolean,
+    dataStoreManager: DataStoreManager
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
+
+    val abilityModifiers = remember { mutableStateMapOf<String, Int>() }
+    var isProficiencyEnabled by remember { mutableStateOf(false) }
+    var proficiencyValue by remember { mutableStateOf(0) }
+    var isExpertiseEnabled by remember { mutableStateOf(false) }
+
     var showDragonAnimation by remember { mutableStateOf(false) }
+
+    // Sync state from DataStore
+    LaunchedEffect(Unit) {
+        coroutineScope.launch {
+            dataStoreManager.getAbilityModifiers().collect { savedModifiers ->
+                abilityModifiers.putAll(savedModifiers)
+            }
+        }
+        coroutineScope.launch {
+            dataStoreManager.getProficiencyEnabled().collect { isProficiencyEnabled = it }
+        }
+        coroutineScope.launch {
+            dataStoreManager.getProficiencyValue().collect { proficiencyValue = it }
+        }
+        coroutineScope.launch {
+            dataStoreManager.getExpertiseEnabled().collect { isExpertiseEnabled = it }
+        }
+    }
+
+    // Compute totals
     val rollTotal = rollResults.sum()
+    val abilityModifierTotal = abilityModifiers.values.sum()
+    val proficiencyBonus = if (isProficiencyEnabled) {
+        if (isExpertiseEnabled) proficiencyValue * 2 else proficiencyValue
+    } else 0
+    val modifierTotal = abilityModifierTotal + proficiencyBonus
 
     Scaffold(
         topBar = { AppTopBar() },
@@ -62,7 +95,7 @@ fun MainRollPage(
                         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(12.dp),
+                            .padding(16.dp),
                         shape = MaterialTheme.shapes.medium,
                         elevation = CardDefaults.cardElevation(8.dp)
                     ) {
@@ -164,9 +197,13 @@ fun MainRollPage(
                         DiceResultDisplay(
                             selectedDiceList = selectedDiceList,
                             rollResults = rollResults,
-                            shouldAnimate = hasRolled && isFocused && shouldAnimate, // Only animate on new rolls
+                            shouldAnimate = hasRolled && isFocused && shouldAnimate,
                             hasRolled = hasRolled,
                             rollTotal = rollTotal,
+                            abilityModifiers = abilityModifiers, // Pass ability modifiers
+                            isProficiencyEnabled = isProficiencyEnabled, // Pass proficiency state
+                            proficiencyValue = proficiencyValue, // Pass proficiency value
+                            isExpertiseEnabled = isExpertiseEnabled, // Pass expertise state
                             modifier = Modifier.fillMaxSize()
                         )
                     }
@@ -186,10 +223,19 @@ fun MainRollPage(
                                     onRollResultsUpdated(rolledResults)
                                     onHasRolledUpdated(true)
 
-                                    // Update the roll history
-                                    rollHistory.add(rolledResults)
-                                    if (rollHistory.size > 10) {
-                                        rollHistory.removeFirst()
+                                    // Only add to history if not empty
+                                    if (rolledResults.isNotEmpty()) {
+                                        rollHistory.add(
+                                            Triple(
+                                                rolledResults, // The rolled dice results
+                                                abilityModifierTotal, // Pass the summed ability modifiers
+                                                proficiencyBonus // Pass the calculated proficiency bonus
+                                            )
+                                        )
+                                        if (rollHistory.size > 10) {
+                                            rollHistory.removeFirst()
+                                        }
+                                        dataStoreManager.saveRollHistory(rollHistory)
                                     }
                                 }
                             }
@@ -199,8 +245,10 @@ fun MainRollPage(
                             .fillMaxWidth()
                             .padding(16.dp)
                     )
+
                 }
 
+                // Show Dragon Animation when triggered
                 // Show Dragon Animation when triggered
                 if (showDragonAnimation) {
                     DragonAnimation(
@@ -220,7 +268,6 @@ fun MainRollPage(
                                     repeat(clearCount) {
                                         if (selectedDiceList.isNotEmpty()) {
                                             selectedDiceList.removeLast()
-
                                         }
                                     }
                                 }
@@ -229,12 +276,14 @@ fun MainRollPage(
                         onAnimationEnd = {
                             showDragonAnimation = false
                             onRollResultsUpdated(emptyList())
-                        }
+                        },
+                        dataStoreManager = DataStoreManager(LocalContext.current) // Pass dataStoreManager here
                     )
                 }
 
-
             }
+
         }
     )
 }
+
