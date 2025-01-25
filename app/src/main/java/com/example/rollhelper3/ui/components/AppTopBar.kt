@@ -32,7 +32,8 @@ fun AppTopBar() {
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 8.dp)
         ) {
-            // Title centered in the top bar
+            // Display app's title, centered in the top bar for better visibility
+
             Text(
                 text = "RollHelper",
                 style = MaterialTheme.typography.headlineLarge,

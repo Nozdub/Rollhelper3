@@ -38,7 +38,7 @@ fun DragonAnimation(
     var animationComplete by remember { mutableStateOf(false) }
 
     if (isTriggered) {
-        // Play sound and start animation
+        // Play the dragon roar sound if the animation is triggered and audio is enabled
         LaunchedEffect(Unit) {
             val audioManager = AudioManager(context, dataStoreManager)
 

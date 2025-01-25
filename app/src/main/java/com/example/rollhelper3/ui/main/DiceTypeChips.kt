@@ -14,68 +14,44 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun DiceTypeChips(
     onDiceSelected: (String) -> Unit,
+    diceRows: List<List<String>> = listOf(
+        listOf("d4", "d6", "d8"),
+        listOf("d10", "d12", "d20")
+    ),
     modifier: Modifier = Modifier
 ) {
-    val diceTypesRow1 = listOf("d4", "d6", "d8")
-    val diceTypesRow2 = listOf("d10", "d12", "d20")
-
     Column(modifier = modifier.padding(4.dp)) {
-        // First row of chips
-        Row(modifier = Modifier.padding(8.dp)) {
-            diceTypesRow1.forEach { diceType ->
-                FilterChip(
-                    selected = false,
-                    onClick = {
-                        onDiceSelected(diceType)
-                    },
-                    label = {
-                        Text(
-                            text = diceType,
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onPrimary,
-                            textAlign = TextAlign.Center, // Make sure text is centered
-                            letterSpacing = 2.sp,
-                            modifier = Modifier.fillMaxWidth() // Ensure text takes full space to be centered
-                        )
-                    },
-                    colors = FilterChipDefaults.filterChipColors(
-                        selectedContainerColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                        containerColor = MaterialTheme.colorScheme.background
-                    ),
-                    modifier = Modifier
-                        .padding(horizontal = 8.dp)
-                        .weight(1f), // Each chip takes up equal space
-                )
-            }
+        diceRows.forEach { diceTypes ->
+            DiceRow(diceTypes, onDiceSelected)
         }
+    }
+}
 
-        // Second row of chips
-        Row(modifier = Modifier.padding(8.dp)) {
-            diceTypesRow2.forEach { diceType ->
-                FilterChip(
-                    selected = false,
-                    onClick = {
-                        onDiceSelected(diceType)
-                    },
-                    label = {
-                        Text(
-                            text = diceType,
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onPrimary,
-                            textAlign = TextAlign.Center, // Make sure text is centered
-                            letterSpacing = 2.sp,
-                            modifier = Modifier.fillMaxWidth() // Ensure text takes full space to be centered
-                        )
-                    },
-                    colors = FilterChipDefaults.filterChipColors(
-                        selectedContainerColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                        containerColor = MaterialTheme.colorScheme.background
-                    ),
-                    modifier = Modifier
-                        .padding(horizontal = 8.dp)
-                        .weight(1f), // Each chip takes up equal space
-                )
-            }
+@Composable
+private fun DiceRow(diceTypes: List<String>, onDiceSelected: (String) -> Unit) {
+    Row(modifier = Modifier.padding(8.dp)) {
+        diceTypes.forEach { diceType ->
+            FilterChip(
+                selected = false,
+                onClick = { onDiceSelected(diceType) },
+                label = {
+                    Text(
+                        text = diceType,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        textAlign = TextAlign.Center,
+                        letterSpacing = 2.sp,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                },
+                colors = FilterChipDefaults.filterChipColors(
+                    selectedContainerColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    containerColor = MaterialTheme.colorScheme.background
+                ),
+                modifier = Modifier
+                    .padding(horizontal = 8.dp)
+                    .weight(1f)
+            )
         }
     }
 }

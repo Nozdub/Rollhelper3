@@ -99,7 +99,7 @@ fun HistoryPage(
                                     }
 
 
-                                    // Display the styled roll text
+                                    // Display the roll history with styled text for dice rolls, modifiers, and total
                                     Text(
                                         text = rollText,
                                         style = MaterialTheme.typography.bodyMedium.copy(
