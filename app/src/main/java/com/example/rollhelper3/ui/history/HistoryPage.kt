@@ -37,7 +37,7 @@ fun HistoryPage(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Card(
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(16.dp),
@@ -78,7 +78,7 @@ fun HistoryPage(
                                         // Add ability modifier
                                         if (abilityMod != 0) {
                                             append(" + ")
-                                            withStyle(style = SpanStyle(color = Color.Red)) {
+                                            withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.tertiaryContainer)) {
                                                 append("$abilityMod")
                                             }
                                         }
@@ -86,7 +86,7 @@ fun HistoryPage(
                                         // Add proficiency modifier
                                         if (proficiencyMod != 0) {
                                             append(" + ")
-                                            withStyle(style = SpanStyle(color = Color.Green)) {
+                                            withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onTertiaryContainer)) {
                                                 append("$proficiencyMod")
                                             }
                                         }
@@ -127,11 +127,11 @@ fun HistoryPage(
                                     label = "Dice Rolls"
                                 )
                                 LegendItem(
-                                    color = Color.Red,
+                                    color = MaterialTheme.colorScheme.tertiaryContainer,
                                     label = "Ability Modifier"
                                 )
                                 LegendItem(
-                                    color = Color.Green,
+                                    color = MaterialTheme.colorScheme.onTertiaryContainer,
                                     label = "Proficiency Modifier"
                                 )
                             }

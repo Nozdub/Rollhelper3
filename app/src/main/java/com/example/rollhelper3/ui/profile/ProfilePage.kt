@@ -229,11 +229,7 @@ fun AbilityModifiersSection(
                     Text(
                         text = key,
                         style = MaterialTheme.typography.bodyMedium.copy(
-                            shadow = Shadow(
-                                color = Color.Black,
-                                offset = Offset(2f, 2f),
-                                blurRadius = 4f
-                            )
+
                         ),
                         color = MaterialTheme.colorScheme.scrim,
                         modifier = Modifier.weight(1f)
@@ -325,11 +321,7 @@ fun ProficiencyBonusSection(
                 Text(
                     text = "Proficiency Bonus",
                     style = MaterialTheme.typography.bodyMedium.copy(
-                        shadow = Shadow(
-                            color = Color.Black,
-                            offset = Offset(2f, 2f),
-                            blurRadius = 4f
-                        )
+
                     ),
                     color = MaterialTheme.colorScheme.scrim,
                     modifier = Modifier.weight(1f)
