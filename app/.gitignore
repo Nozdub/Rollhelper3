@@ -2,8 +2,8 @@
 # Ignore private image assets
 /assets-private/
 
-/app/src/main/assets/dice
-
+app/src/main/assets/dice/**/animation/*.png
+app/src/main/assets/dice/**/stills/*.png
 
 # Ignore all PNGs in drawable folder
 app/src/main/res/drawable/*.png
