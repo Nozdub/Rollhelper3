@@ -1,1 +1,13 @@
 /build
+# Ignore private image assets
+/assets-private/
+
+/app/src/main/assets/d4
+/app/src/main/assets/d6
+/app/src/main/assets/d8
+/app/src/main/assets/d10
+/app/src/main/assets/d12
+/app/src/main/assets/d20
+
+# Ignore all PNGs in drawable folder
+app/src/main/res/drawable/*.png
