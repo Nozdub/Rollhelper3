@@ -52,6 +52,7 @@ To run the RollHelper app locally, follow these steps:
 - **Minor fixes**: Fix issues regarding light vs darkmode.
 - **Sound Effects**: Might add a dice rolling sound.
 - **Optimization**: Improve dice animations and general app optimizing.
+- **API updates**: Updating app to meet Google's API requirements. 
 
 ## Acknowledgments
 
