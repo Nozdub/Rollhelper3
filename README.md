@@ -2,6 +2,9 @@
 
 RollHelper is an Android application designed to help tabletop gamers with their dice rolls. Built with Jetpack Compose and Material Design 3, the app provides an intuitive, visually appealing interface for selecting dice types, rolling them, and viewing the results. It's a handy tool for Dungeons & Dragons (D&D) players and other tabletop RPG enthusiasts who want to simplify dice rolling and keep track of their roll history.
 
+
+## UPDATE!
+Rollhelper is now awaiting Google's final approval before becoming available on Google Play Store. 
 ## Features
 
 - **Select Dice Type and amount**: Choose from a range of dice types (D4, D6, D8, D10, D12, D20).
