@@ -5,15 +5,15 @@ plugins {
 }
 
 android {
-    namespace = "com.example.rollhelper3"
-    compileSdk = 34
+    namespace = "com.chriaasen.rollhelper"
+    compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.rollhelper3"
+        applicationId = "com.chriaasen.rollhelper"
         minSdk = 30
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        targetSdk = 35
+        versionCode = 4
+        versionName = "1.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -84,6 +84,11 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    implementation(libs.kotlinx.serialization.json)
+
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.33.2-alpha")
+
+
     // Proto DataStore
     implementation("androidx.datastore:datastore:1.1.1")
 
@@ -93,6 +98,7 @@ dependencies {
     // datastore
     implementation("androidx.datastore:datastore-preferences:1.0.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
+
 
 }
 
