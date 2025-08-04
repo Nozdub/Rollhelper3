@@ -2,6 +2,9 @@
 
 RollHelper is an Android application designed to help tabletop gamers with their dice rolls. Built with Jetpack Compose and Material Design 3, the app provides an intuitive, visually appealing interface for selecting dice types, rolling them, and viewing the results. It's a handy tool for Dungeons & Dragons (D&D) players and other tabletop RPG enthusiasts who want to simplify dice rolling and keep track of their roll history.
 
+
+## UPDATE!
+Rollhelper is now awaiting Google's final approval before becoming available on Google Play Store. 
 ## Features
 
 - **Select Dice Type and amount**: Choose from a range of dice types (D4, D6, D8, D10, D12, D20).
@@ -13,8 +16,6 @@ RollHelper is an Android application designed to help tabletop gamers with their
 ## Screenshots
 
 <img src=https://github.com/Nozdub/Rollhelper3/blob/3b6aa48389f2c242358ef715d6dd66255374b917/Screenshot_20250120-142942.png alt="App MainScreen" width="30%"> <img src=https://github.com/Nozdub/Rollhelper3/blob/3b6aa48389f2c242358ef715d6dd66255374b917/Screenshot_20250120-142944.png alt="App HistoryScreen" width="30%"> <img src=https://github.com/Nozdub/Rollhelper3/blob/3b6aa48389f2c242358ef715d6dd66255374b917/Screenshot_20250120-142947.png alt="App ProfileScreen" width="30%"> 
-
-
 
 ## Installation
 
@@ -50,16 +51,23 @@ To run the RollHelper app locally, follow these steps:
 - **Snackbar**: To display brief messages at the bottom of the screen.
 
 ## Future Enhancements
+
 - **Minor fixes**: Fix issues regarding light vs darkmode.
 - **Sound Effects**: Might add a dice rolling sound.
 - **Optimization**: Improve dice animations and general app optimizing.
-
+- **API updates**: Updating app to meet Google's API requirements. 
 
 ## Acknowledgments
 
 - Thanks to the open-source community for the libraries and tools that made this project possible.
 - Thanks to Robert Brooks - gamedeveloperstudio.com for allowing usage of purchased dice files. 
 - Inspiration from the Dungeons & Dragons and tabletop gaming community.
+
+## ⚠️ Note on Missing Assets
+
+Some image assets used for dice animations and stills (located in `assets/dice/`) are intentionally excluded from the public repository via `.gitignore`. These files include proprietary content licensed from third-party creators and cannot be redistributed.
+
+If you are a collaborator or contributor and require access to these assets for development purposes, please contact the maintainer directly.
 
 ## License
 
