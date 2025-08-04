@@ -1,6 +1,7 @@
 package com.chriaasen.rollhelper.ui.main
 
 import android.annotation.SuppressLint
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -20,6 +21,7 @@ import com.chriaasen.rollhelper.ui.storage.DataStoreManager
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+@RequiresApi(35)
 @SuppressLint("CoroutineCreationDuringComposition")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
